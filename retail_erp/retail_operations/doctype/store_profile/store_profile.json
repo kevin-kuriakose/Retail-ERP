@@ -1,0 +1,157 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series",
+    "store_name",
+    "is_active",
+    "section_address",
+    "address_line1",
+    "address_line2",
+    "city",
+    "state",
+    "pincode",
+    "country",
+    "section_business",
+    "gstin",
+    "pos_profile",
+    "warehouse",
+    "column_break_1",
+    "phone",
+    "email",
+    "store_manager"
+  ],
+  "fields": [
+    {
+      "fieldname": "naming_series",
+      "fieldtype": "Series",
+      "label": "Series",
+      "options": "STORE-.YYYY.-.#####",
+      "default": "STORE-.YYYY.-.#####"
+    },
+    {
+      "fieldname": "store_name",
+      "fieldtype": "Data",
+      "label": "Store Name",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "label": "Is Active",
+      "default": "1"
+    },
+    {
+      "fieldname": "section_address",
+      "fieldtype": "Section Break",
+      "label": "Address"
+    },
+    {
+      "fieldname": "address_line1",
+      "fieldtype": "Data",
+      "label": "Address Line 1"
+    },
+    {
+      "fieldname": "address_line2",
+      "fieldtype": "Data",
+      "label": "Address Line 2"
+    },
+    {
+      "fieldname": "city",
+      "fieldtype": "Data",
+      "label": "City",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "state",
+      "fieldtype": "Data",
+      "label": "State"
+    },
+    {
+      "fieldname": "pincode",
+      "fieldtype": "Data",
+      "label": "Pincode"
+    },
+    {
+      "fieldname": "country",
+      "fieldtype": "Data",
+      "label": "Country",
+      "default": "India"
+    },
+    {
+      "fieldname": "section_business",
+      "fieldtype": "Section Break",
+      "label": "Business Details"
+    },
+    {
+      "fieldname": "gstin",
+      "fieldtype": "Data",
+      "label": "GSTIN"
+    },
+    {
+      "fieldname": "pos_profile",
+      "fieldtype": "Data",
+      "label": "POS Profile Name"
+    },
+    {
+      "fieldname": "warehouse",
+      "fieldtype": "Data",
+      "label": "Linked Warehouse"
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "phone",
+      "fieldtype": "Data",
+      "label": "Phone"
+    },
+    {
+      "fieldname": "email",
+      "fieldtype": "Data",
+      "label": "Email",
+      "options": "Email"
+    },
+    {
+      "fieldname": "store_manager",
+      "fieldtype": "Data",
+      "label": "Store Manager"
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Store Profile",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Store Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    },
+    {
+      "role": "Cashier",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "delete": 0
+    }
+  ],
+  "title_field": "store_name",
+  "track_changes": 1
+}

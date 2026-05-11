@@ -1,0 +1,17 @@
+{
+  "attach_print": 0,
+  "channel": "System Notification",
+  "condition": "doc.status == 'Open'",
+  "creation": "2024-01-01 00:00:00.000000",
+  "date_changed": "shift_open_time",
+  "days_in_advance": 0,
+  "doctype": "Notification",
+  "document_type": "Cashier Shift",
+  "enabled": 1,
+  "event": "Days After",
+  "message": "<p>Cashier shift for <strong>{{ doc.cashier }}</strong> at {{ doc.store }} opened on {{ doc.shift_open_time }} has not been closed. Please close the shift and reconcile cash immediately.</p>",
+  "name": "POS Shift Not Closed",
+  "owner": "Administrator",
+  "send_system_notification": 1,
+  "subject": "Unclosed Shift Alert — {{ doc.cashier }} at {{ doc.store }}"
+}

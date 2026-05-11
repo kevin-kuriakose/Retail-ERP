@@ -1,0 +1,141 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series",
+    "order_date",
+    "store",
+    "supplier",
+    "expected_delivery_date",
+    "column_break_1",
+    "payment_terms",
+    "remarks",
+    "section_items",
+    "items",
+    "section_totals",
+    "grand_total",
+    "section_status",
+    "status"
+  ],
+  "fields": [
+    {
+      "fieldname": "naming_series",
+      "fieldtype": "Series",
+      "label": "Series",
+      "options": "RPO-.YYYY.-.#####",
+      "default": "RPO-.YYYY.-.#####"
+    },
+    {
+      "fieldname": "order_date",
+      "fieldtype": "Date",
+      "label": "Order Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "store",
+      "fieldtype": "Link",
+      "label": "Store",
+      "options": "Store Profile",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "supplier",
+      "fieldtype": "Link",
+      "label": "Supplier",
+      "options": "Retail Supplier",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "expected_delivery_date",
+      "fieldtype": "Date",
+      "label": "Expected Delivery",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "payment_terms",
+      "fieldtype": "Select",
+      "label": "Payment Terms",
+      "options": "Immediate\nNet 15\nNet 30\nNet 45\nNet 60",
+      "default": "Net 30"
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    },
+    {
+      "fieldname": "section_items",
+      "fieldtype": "Section Break",
+      "label": "Items"
+    },
+    {
+      "fieldname": "items",
+      "fieldtype": "Table",
+      "label": "Items",
+      "options": "Retail Purchase Order Item"
+    },
+    {
+      "fieldname": "section_totals",
+      "fieldtype": "Section Break",
+      "label": "Totals"
+    },
+    {
+      "fieldname": "grand_total",
+      "fieldtype": "Currency",
+      "label": "Grand Total (Rs)",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_status",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nOrdered\nPartially Received\nReceived\nCancelled",
+      "default": "Draft",
+      "in_list_view": 1
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Retail Purchase Order",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Purchase Executive",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    },
+    {
+      "role": "Store Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    }
+  ],
+  "title_field": "name",
+  "track_changes": 1
+}

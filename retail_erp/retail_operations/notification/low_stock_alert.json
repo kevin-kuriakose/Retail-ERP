@@ -1,0 +1,15 @@
+{
+  "attach_print": 0,
+  "channel": "System Notification",
+  "condition": "doc.current_stock <= doc.reorder_level and doc.reorder_level > 0",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "Notification",
+  "document_type": "Product Item",
+  "enabled": 1,
+  "event": "Save",
+  "message": "<p>Stock for <strong>{{ doc.item_name }}</strong> ({{ doc.name }}) is at {{ doc.current_stock }} {{ doc.uom }}, which is at or below the reorder level of {{ doc.reorder_level }}. Please raise a Purchase Order.</p>",
+  "name": "Low Stock Alert",
+  "owner": "Administrator",
+  "send_system_notification": 1,
+  "subject": "Low Stock Alert — {{ doc.item_name }} ({{ doc.current_stock }} {{ doc.uom }} remaining)"
+}

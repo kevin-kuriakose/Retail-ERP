@@ -1,0 +1,17 @@
+{
+  "attach_print": 0,
+  "channel": "Email",
+  "condition": "",
+  "creation": "2024-01-01 00:00:00.000000",
+  "date_changed": "date_of_birth",
+  "days_in_advance": 1,
+  "doctype": "Notification",
+  "document_type": "Retail Customer",
+  "enabled": 1,
+  "event": "Days Before",
+  "message": "<p>Dear {{ doc.customer_name }},</p><p>Wishing you a very Happy Birthday! As a valued {{ doc.loyalty_tier }} member, enjoy a special birthday discount on your next purchase at RetailEdge. Your current loyalty points: {{ doc.loyalty_points }}.</p><p>Visit us today to redeem your birthday reward!</p>",
+  "name": "Customer Birthday Reward",
+  "owner": "Administrator",
+  "send_system_notification": 0,
+  "subject": "Happy Birthday {{ doc.customer_name }}! Your RetailEdge Birthday Gift Awaits"
+}

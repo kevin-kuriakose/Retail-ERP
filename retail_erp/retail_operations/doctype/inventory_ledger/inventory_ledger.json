@@ -1,0 +1,161 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series",
+    "posting_date",
+    "posting_time",
+    "item",
+    "store",
+    "warehouse",
+    "column_break_1",
+    "voucher_type",
+    "voucher_no",
+    "transaction_type",
+    "qty",
+    "rate",
+    "amount",
+    "section_balance",
+    "qty_before",
+    "qty_after",
+    "remarks"
+  ],
+  "fields": [
+    {
+      "fieldname": "naming_series",
+      "fieldtype": "Series",
+      "label": "Series",
+      "options": "IL-.YYYY.-.#####",
+      "default": "IL-.YYYY.-.#####"
+    },
+    {
+      "fieldname": "posting_date",
+      "fieldtype": "Date",
+      "label": "Posting Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "posting_time",
+      "fieldtype": "Time",
+      "label": "Posting Time"
+    },
+    {
+      "fieldname": "item",
+      "fieldtype": "Link",
+      "label": "Item",
+      "options": "Product Item",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "store",
+      "fieldtype": "Link",
+      "label": "Store",
+      "options": "Store Profile",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "warehouse",
+      "fieldtype": "Data",
+      "label": "Warehouse"
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "voucher_type",
+      "fieldtype": "Select",
+      "label": "Voucher Type",
+      "options": "\nPOS Invoice\nRetail Sales Invoice\nRetail Purchase Invoice\nStock Adjustment\nReturn Transaction\nOpening Stock",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "voucher_no",
+      "fieldtype": "Data",
+      "label": "Voucher No",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "transaction_type",
+      "fieldtype": "Select",
+      "label": "Transaction Type",
+      "options": "In\nOut\nAdjustment",
+      "reqd": 1
+    },
+    {
+      "fieldname": "qty",
+      "fieldtype": "Float",
+      "label": "Quantity",
+      "reqd": 1
+    },
+    {
+      "fieldname": "rate",
+      "fieldtype": "Currency",
+      "label": "Rate (Rs)"
+    },
+    {
+      "fieldname": "amount",
+      "fieldtype": "Currency",
+      "label": "Amount (Rs)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_balance",
+      "fieldtype": "Section Break",
+      "label": "Balance"
+    },
+    {
+      "fieldname": "qty_before",
+      "fieldtype": "Float",
+      "label": "Qty Before",
+      "read_only": 1
+    },
+    {
+      "fieldname": "qty_after",
+      "fieldtype": "Float",
+      "label": "Qty After",
+      "read_only": 1
+    },
+    {
+      "fieldname": "remarks",
+      "fieldtype": "Small Text",
+      "label": "Remarks"
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Inventory Ledger",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Store Manager",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "delete": 0
+    },
+    {
+      "role": "Cashier",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "delete": 0
+    }
+  ],
+  "title_field": "item",
+  "track_changes": 1
+}

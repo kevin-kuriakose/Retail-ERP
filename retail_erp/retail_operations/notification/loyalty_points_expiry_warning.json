@@ -1,0 +1,17 @@
+{
+  "attach_print": 0,
+  "channel": "Email",
+  "condition": "doc.loyalty_points > 0",
+  "creation": "2024-01-01 00:00:00.000000",
+  "date_changed": "points_expiry_date",
+  "days_in_advance": 7,
+  "doctype": "Notification",
+  "document_type": "Retail Customer",
+  "enabled": 1,
+  "event": "Days Before",
+  "message": "<p>Dear {{ doc.customer_name }},</p><p>Your <strong>{{ doc.loyalty_points }} loyalty points</strong> will expire on {{ doc.points_expiry_date }}. Redeem them before they expire and save on your next purchase at RetailEdge!</p>",
+  "name": "Loyalty Points Expiry Warning",
+  "owner": "Administrator",
+  "send_system_notification": 1,
+  "subject": "Your {{ doc.loyalty_points }} RetailEdge Points Expire in 7 Days!"
+}

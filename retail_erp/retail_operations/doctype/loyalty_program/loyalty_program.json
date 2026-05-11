@@ -1,0 +1,70 @@
+{
+  "actions": [],
+  "autoname": "field:program_name",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "program_name",
+    "is_active",
+    "redemption_rate",
+    "expiry_months",
+    "tiers"
+  ],
+  "fields": [
+    {
+      "fieldname": "program_name",
+      "fieldtype": "Data",
+      "label": "Program Name",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "label": "Is Active",
+      "default": "1"
+    },
+    {
+      "fieldname": "redemption_rate",
+      "fieldtype": "Float",
+      "label": "Rs per Point (Redemption)",
+      "default": "0.25"
+    },
+    {
+      "fieldname": "expiry_months",
+      "fieldtype": "Int",
+      "label": "Points Expiry (Months)",
+      "default": "12"
+    },
+    {
+      "fieldname": "tiers",
+      "fieldtype": "Table",
+      "label": "Tiers",
+      "options": "Loyalty Tier"
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Loyalty Program",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Store Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    }
+  ],
+  "title_field": "program_name",
+  "track_changes": 1
+}

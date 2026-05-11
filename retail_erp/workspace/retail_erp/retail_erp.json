@@ -1,0 +1,232 @@
+{
+  "category": "Modules",
+  "charts": [],
+  "content": "[{\"type\": \"card\", \"data\": {\"card_name\": \"Masters\", \"col\": 4, \"links\": [{\"label\": \"Store Profile\", \"link_to\": \"Store Profile\", \"type\": \"DocType\"}, {\"label\": \"Product Item\", \"link_to\": \"Product Item\", \"type\": \"DocType\"}, {\"label\": \"Retail Price List\", \"link_to\": \"Retail Price List\", \"type\": \"DocType\"}, {\"label\": \"Tax Template\", \"link_to\": \"Tax Template\", \"type\": \"DocType\"}, {\"label\": \"Retail Customer\", \"link_to\": \"Retail Customer\", \"type\": \"DocType\"}, {\"label\": \"Retail Supplier\", \"link_to\": \"Retail Supplier\", \"type\": \"DocType\"}, {\"label\": \"Loyalty Program\", \"link_to\": \"Loyalty Program\", \"type\": \"DocType\"}, {\"label\": \"Promotional Scheme\", \"link_to\": \"Promotional Scheme\", \"type\": \"DocType\"}]}}, {\"type\": \"card\", \"data\": {\"card_name\": \"Sales and POS\", \"col\": 4, \"links\": [{\"label\": \"POS Invoice\", \"link_to\": \"POS Invoice\", \"type\": \"DocType\"}, {\"label\": \"Retail Sales Invoice\", \"link_to\": \"Retail Sales Invoice\", \"type\": \"DocType\"}, {\"label\": \"Retail Payment Entry\", \"link_to\": \"Retail Payment Entry\", \"type\": \"DocType\"}, {\"label\": \"Cashier Shift\", \"link_to\": \"Cashier Shift\", \"type\": \"DocType\"}, {\"label\": \"Return Transaction\", \"link_to\": \"Return Transaction\", \"type\": \"DocType\"}, {\"label\": \"Retail Delivery Note\", \"link_to\": \"Retail Delivery Note\", \"type\": \"DocType\"}]}}, {\"type\": \"card\", \"data\": {\"card_name\": \"Purchasing\", \"col\": 4, \"links\": [{\"label\": \"Retail Purchase Order\", \"link_to\": \"Retail Purchase Order\", \"type\": \"DocType\"}, {\"label\": \"Retail Purchase Invoice\", \"link_to\": \"Retail Purchase Invoice\", \"type\": \"DocType\"}, {\"label\": \"Retail Supplier\", \"link_to\": \"Retail Supplier\", \"type\": \"DocType\"}]}}, {\"type\": \"card\", \"data\": {\"card_name\": \"Inventory\", \"col\": 4, \"links\": [{\"label\": \"Inventory Ledger\", \"link_to\": \"Inventory Ledger\", \"type\": \"DocType\"}, {\"label\": \"Stock Adjustment\", \"link_to\": \"Stock Adjustment\", \"type\": \"DocType\"}, {\"label\": \"Low Stock Alert Config\", \"link_to\": \"Low Stock Alert Config\", \"type\": \"DocType\"}, {\"label\": \"Real-Time Stock Report\", \"link_to\": \"Real-Time Stock Report\", \"type\": \"Report\"}, {\"label\": \"Inventory Valuation\", \"link_to\": \"Inventory Valuation\", \"type\": \"Report\"}]}}, {\"type\": \"card\", \"data\": {\"card_name\": \"Reports\", \"col\": 4, \"links\": [{\"label\": \"Daily Sales Summary\", \"link_to\": \"Daily Sales Summary\", \"type\": \"Report\"}, {\"label\": \"Fast Moving Items\", \"link_to\": \"Fast Moving Items\", \"type\": \"Report\"}, {\"label\": \"Slow Dead Stock Report\", \"link_to\": \"Slow Dead Stock Report\", \"type\": \"Report\"}, {\"label\": \"Cashier Shift Report\", \"link_to\": \"Cashier Shift Report\", \"type\": \"Report\"}, {\"label\": \"Customer Loyalty Report\", \"link_to\": \"Customer Loyalty Report\", \"type\": \"Report\"}, {\"label\": \"GST Sales Register\", \"link_to\": \"GST Sales Register\", \"type\": \"Report\"}, {\"label\": \"GST Purchase Register\", \"link_to\": \"GST Purchase Register\", \"type\": \"Report\"}, {\"label\": \"Profit and Loss by Store\", \"link_to\": \"Profit and Loss by Store\", \"type\": \"Report\"}, {\"label\": \"Supplier Purchase Register\", \"link_to\": \"Supplier Purchase Register\", \"type\": \"Report\"}, {\"label\": \"Payment Gateway Settlement\", \"link_to\": \"Payment Gateway Settlement\", \"type\": \"Report\"}, {\"label\": \"Return and Refund Report\", \"link_to\": \"Return and Refund Report\", \"type\": \"Report\"}, {\"label\": \"Promotional Impact Report\", \"link_to\": \"Promotional Impact Report\", \"type\": \"Report\"}]}}, {\"type\": \"card\", \"data\": {\"card_name\": \"Configuration\", \"col\": 4, \"links\": [{\"label\": \"Payment Gateway Config\", \"link_to\": \"Payment Gateway Config\", \"type\": \"DocType\"}, {\"label\": \"Tax Template\", \"link_to\": \"Tax Template\", \"type\": \"DocType\"}]}}]",
+  "doctype": "Workspace",
+  "for_user": "",
+  "icon": "uil uil-store",
+  "is_hidden": 0,
+  "label": "RetailEdge",
+  "module": "Retail Operations",
+  "name": "RetailEdge",
+  "public": 1,
+  "shortcuts": [
+    {
+      "label": "Store Profile",
+      "link_to": "Store Profile",
+      "type": "DocType",
+      "name": "sc-store",
+      "color": "Blue",
+      "icon": "uil uil-store"
+    },
+    {
+      "label": "Product Item",
+      "link_to": "Product Item",
+      "type": "DocType",
+      "name": "sc-item",
+      "color": "Green",
+      "icon": "uil uil-package"
+    },
+    {
+      "label": "Retail Price List",
+      "link_to": "Retail Price List",
+      "type": "DocType",
+      "name": "sc-rpl",
+      "color": "Cyan",
+      "icon": "uil uil-tag-alt"
+    },
+    {
+      "label": "Tax Template",
+      "link_to": "Tax Template",
+      "type": "DocType",
+      "name": "sc-tax",
+      "color": "Orange",
+      "icon": "uil uil-percentage"
+    },
+    {
+      "label": "Retail Customer",
+      "link_to": "Retail Customer",
+      "type": "DocType",
+      "name": "sc-cust",
+      "color": "Purple",
+      "icon": "uil uil-user"
+    },
+    {
+      "label": "Retail Supplier",
+      "link_to": "Retail Supplier",
+      "type": "DocType",
+      "name": "sc-supp",
+      "color": "Yellow",
+      "icon": "uil uil-truck"
+    },
+    {
+      "label": "Loyalty Program",
+      "link_to": "Loyalty Program",
+      "type": "DocType",
+      "name": "sc-loyal",
+      "color": "Pink",
+      "icon": "uil uil-gift"
+    },
+    {
+      "label": "Payment Gateway Config",
+      "link_to": "Payment Gateway Config",
+      "type": "DocType",
+      "name": "sc-pgw",
+      "color": "Blue",
+      "icon": "uil uil-credit-card"
+    },
+    {
+      "label": "Low Stock Alert Config",
+      "link_to": "Low Stock Alert Config",
+      "type": "DocType",
+      "name": "sc-lsa",
+      "color": "Red",
+      "icon": "uil uil-exclamation-triangle"
+    },
+    {
+      "label": "Promotional Scheme",
+      "link_to": "Promotional Scheme",
+      "type": "DocType",
+      "name": "sc-promo",
+      "color": "Green",
+      "icon": "uil uil-percentage"
+    },
+    {
+      "label": "POS Invoice",
+      "link_to": "POS Invoice",
+      "type": "DocType",
+      "name": "sc-pos",
+      "color": "Red",
+      "icon": "uil uil-receipt"
+    },
+    {
+      "label": "Retail Sales Invoice",
+      "link_to": "Retail Sales Invoice",
+      "type": "DocType",
+      "name": "sc-rsi",
+      "color": "Blue",
+      "icon": "uil uil-file-alt"
+    },
+    {
+      "label": "Retail Purchase Order",
+      "link_to": "Retail Purchase Order",
+      "type": "DocType",
+      "name": "sc-rpo",
+      "color": "Green",
+      "icon": "uil uil-shopping-cart"
+    },
+    {
+      "label": "Retail Purchase Invoice",
+      "link_to": "Retail Purchase Invoice",
+      "type": "DocType",
+      "name": "sc-rpi",
+      "color": "Cyan",
+      "icon": "uil uil-file-check"
+    },
+    {
+      "label": "Retail Payment Entry",
+      "link_to": "Retail Payment Entry",
+      "type": "DocType",
+      "name": "sc-rpe",
+      "color": "Purple",
+      "icon": "uil uil-money-bill"
+    },
+    {
+      "label": "Inventory Ledger",
+      "link_to": "Inventory Ledger",
+      "type": "DocType",
+      "name": "sc-inv",
+      "color": "Cyan",
+      "icon": "uil uil-box"
+    },
+    {
+      "label": "Cashier Shift",
+      "link_to": "Cashier Shift",
+      "type": "DocType",
+      "name": "sc-shift",
+      "color": "Orange",
+      "icon": "uil uil-clock"
+    },
+    {
+      "label": "Stock Adjustment",
+      "link_to": "Stock Adjustment",
+      "type": "DocType",
+      "name": "sc-sadj",
+      "color": "Yellow",
+      "icon": "uil uil-balance-scale"
+    },
+    {
+      "label": "Return Transaction",
+      "link_to": "Return Transaction",
+      "type": "DocType",
+      "name": "sc-ret",
+      "color": "Red",
+      "icon": "uil uil-redo"
+    },
+    {
+      "label": "Retail Delivery Note",
+      "link_to": "Retail Delivery Note",
+      "type": "DocType",
+      "name": "sc-rdn",
+      "color": "Green",
+      "icon": "uil uil-truck"
+    },
+    {
+      "label": "Daily Sales Summary",
+      "link_to": "Daily Sales Summary",
+      "type": "Report",
+      "name": "sc-r1",
+      "color": "Blue",
+      "icon": "uil uil-chart-bar"
+    },
+    {
+      "label": "Real-Time Stock Report",
+      "link_to": "Real-Time Stock Report",
+      "type": "Report",
+      "name": "sc-r2",
+      "color": "Green",
+      "icon": "uil uil-analytics"
+    },
+    {
+      "label": "Fast Moving Items",
+      "link_to": "Fast Moving Items",
+      "type": "Report",
+      "name": "sc-r3",
+      "color": "Purple",
+      "icon": "uil uil-rocket"
+    },
+    {
+      "label": "GST Sales Register",
+      "link_to": "GST Sales Register",
+      "type": "Report",
+      "name": "sc-r7",
+      "color": "Orange",
+      "icon": "uil uil-file-check"
+    },
+    {
+      "label": "Customer Loyalty Report",
+      "link_to": "Customer Loyalty Report",
+      "type": "Report",
+      "name": "sc-r6",
+      "color": "Pink",
+      "icon": "uil uil-star"
+    },
+    {
+      "label": "Profit and Loss by Store",
+      "link_to": "Profit and Loss by Store",
+      "type": "Report",
+      "name": "sc-r9",
+      "color": "Cyan",
+      "icon": "uil uil-chart-pie"
+    },
+    {
+      "label": "Inventory Valuation",
+      "link_to": "Inventory Valuation",
+      "type": "Report",
+      "name": "sc-r14",
+      "color": "Yellow",
+      "icon": "uil uil-coins"
+    }
+  ],
+  "title": "RetailEdge"
+}

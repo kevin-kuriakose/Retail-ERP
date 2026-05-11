@@ -1,0 +1,151 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series",
+    "scheme_name",
+    "scheme_type",
+    "is_active",
+    "valid_from",
+    "valid_to",
+    "column_break_1",
+    "applies_to",
+    "item",
+    "category",
+    "section_discount",
+    "discount_percent",
+    "discount_amount",
+    "min_cart_value",
+    "buy_qty",
+    "free_qty",
+    "description"
+  ],
+  "fields": [
+    {
+      "fieldname": "naming_series",
+      "fieldtype": "Series",
+      "label": "Series",
+      "options": "PROMO-.YYYY.-.#####",
+      "default": "PROMO-.YYYY.-.#####"
+    },
+    {
+      "fieldname": "scheme_name",
+      "fieldtype": "Data",
+      "label": "Scheme Name",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "scheme_type",
+      "fieldtype": "Select",
+      "label": "Scheme Type",
+      "options": "Percent Discount on Item\nPercent Discount on Category\nBuy X Get Y Free\nFlat Amount Off on Cart",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "label": "Is Active",
+      "default": "1"
+    },
+    {
+      "fieldname": "valid_from",
+      "fieldtype": "Date",
+      "label": "Valid From",
+      "reqd": 1
+    },
+    {
+      "fieldname": "valid_to",
+      "fieldtype": "Date",
+      "label": "Valid To",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "applies_to",
+      "fieldtype": "Select",
+      "label": "Applies To",
+      "options": "All Items\nSpecific Item\nCategory"
+    },
+    {
+      "fieldname": "item",
+      "fieldtype": "Link",
+      "label": "Item",
+      "options": "Product Item",
+      "depends_on": "eval:doc.applies_to=='Specific Item'"
+    },
+    {
+      "fieldname": "category",
+      "fieldtype": "Select",
+      "label": "Category",
+      "options": "\nGroceries\nBeverages\nPersonal Care\nApparel\nElectronics\nStationery\nDairy\nBakery\nHome Care",
+      "depends_on": "eval:doc.applies_to=='Category'"
+    },
+    {
+      "fieldname": "section_discount",
+      "fieldtype": "Section Break",
+      "label": "Discount Rules"
+    },
+    {
+      "fieldname": "discount_percent",
+      "fieldtype": "Float",
+      "label": "Discount %"
+    },
+    {
+      "fieldname": "discount_amount",
+      "fieldtype": "Currency",
+      "label": "Flat Discount (Rs)"
+    },
+    {
+      "fieldname": "min_cart_value",
+      "fieldtype": "Currency",
+      "label": "Minimum Cart Value (Rs)",
+      "default": "0"
+    },
+    {
+      "fieldname": "buy_qty",
+      "fieldtype": "Float",
+      "label": "Buy Qty (X)"
+    },
+    {
+      "fieldname": "free_qty",
+      "fieldtype": "Float",
+      "label": "Free Qty (Y)"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "label": "Description"
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Promotional Scheme",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Store Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    }
+  ],
+  "title_field": "scheme_name",
+  "track_changes": 1
+}

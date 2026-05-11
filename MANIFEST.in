@@ -1,0 +1,2 @@
+include requirements.txt
+recursive-include retail_erp *.json *.js *.css *.html *.py

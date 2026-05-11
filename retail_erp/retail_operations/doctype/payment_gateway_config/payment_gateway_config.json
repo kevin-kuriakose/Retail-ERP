@@ -1,0 +1,107 @@
+{
+  "actions": [],
+  "autoname": "field:gateway_name",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "gateway_name",
+    "is_active",
+    "environment",
+    "column_break_1",
+    "api_key",
+    "api_secret",
+    "webhook_secret",
+    "section_razorpay",
+    "razorpay_account_id",
+    "auto_capture",
+    "capture_delay_seconds"
+  ],
+  "fields": [
+    {
+      "fieldname": "gateway_name",
+      "fieldtype": "Select",
+      "label": "Gateway",
+      "options": "Razorpay\nCash\nUPI\nStore Credit",
+      "reqd": 1,
+      "default": "Razorpay"
+    },
+    {
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "label": "Is Active",
+      "default": "1"
+    },
+    {
+      "fieldname": "environment",
+      "fieldtype": "Select",
+      "label": "Environment",
+      "options": "Test\nLive",
+      "default": "Test"
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "api_key",
+      "fieldtype": "Data",
+      "label": "API Key / Key ID"
+    },
+    {
+      "fieldname": "api_secret",
+      "fieldtype": "Password",
+      "label": "API Secret"
+    },
+    {
+      "fieldname": "webhook_secret",
+      "fieldtype": "Password",
+      "label": "Webhook Secret"
+    },
+    {
+      "fieldname": "section_razorpay",
+      "fieldtype": "Section Break",
+      "label": "Razorpay Settings"
+    },
+    {
+      "fieldname": "razorpay_account_id",
+      "fieldtype": "Data",
+      "label": "Razorpay Account ID"
+    },
+    {
+      "fieldname": "auto_capture",
+      "fieldtype": "Check",
+      "label": "Auto Capture",
+      "default": "1"
+    },
+    {
+      "fieldname": "capture_delay_seconds",
+      "fieldtype": "Int",
+      "label": "Capture Delay (sec)",
+      "default": "0"
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Payment Gateway Config",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Accounts Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    }
+  ],
+  "title_field": "gateway_name",
+  "track_changes": 1
+}

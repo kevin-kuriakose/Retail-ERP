@@ -1,0 +1,181 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series",
+    "store",
+    "cashier",
+    "shift_open_time",
+    "column_break_1",
+    "shift_close_time",
+    "status",
+    "section_cash",
+    "opening_cash",
+    "closing_cash",
+    "cash_variance",
+    "section_collections",
+    "total_pos_invoices",
+    "total_collections",
+    "cash_collections",
+    "card_collections",
+    "upi_collections",
+    "other_collections",
+    "section_notes",
+    "notes"
+  ],
+  "fields": [
+    {
+      "fieldname": "naming_series",
+      "fieldtype": "Series",
+      "label": "Series",
+      "options": "SHIFT-.YYYY.-.#####",
+      "default": "SHIFT-.YYYY.-.#####"
+    },
+    {
+      "fieldname": "store",
+      "fieldtype": "Link",
+      "label": "Store",
+      "options": "Store Profile",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "cashier",
+      "fieldtype": "Data",
+      "label": "Cashier",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "shift_open_time",
+      "fieldtype": "Datetime",
+      "label": "Shift Open Time",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "shift_close_time",
+      "fieldtype": "Datetime",
+      "label": "Shift Close Time"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Open\nClosed\nVariance Flagged",
+      "default": "Open",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_cash",
+      "fieldtype": "Section Break",
+      "label": "Cash Summary"
+    },
+    {
+      "fieldname": "opening_cash",
+      "fieldtype": "Currency",
+      "label": "Opening Cash (Rs)",
+      "default": "0"
+    },
+    {
+      "fieldname": "closing_cash",
+      "fieldtype": "Currency",
+      "label": "Closing Cash (Rs)"
+    },
+    {
+      "fieldname": "cash_variance",
+      "fieldtype": "Currency",
+      "label": "Cash Variance (Rs)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_collections",
+      "fieldtype": "Section Break",
+      "label": "Collections"
+    },
+    {
+      "fieldname": "total_pos_invoices",
+      "fieldtype": "Int",
+      "label": "Total POS Invoices",
+      "read_only": 1,
+      "default": "0"
+    },
+    {
+      "fieldname": "total_collections",
+      "fieldtype": "Currency",
+      "label": "Total Collections (Rs)",
+      "read_only": 1
+    },
+    {
+      "fieldname": "cash_collections",
+      "fieldtype": "Currency",
+      "label": "Cash",
+      "default": "0"
+    },
+    {
+      "fieldname": "card_collections",
+      "fieldtype": "Currency",
+      "label": "Card",
+      "default": "0"
+    },
+    {
+      "fieldname": "upi_collections",
+      "fieldtype": "Currency",
+      "label": "UPI",
+      "default": "0"
+    },
+    {
+      "fieldname": "other_collections",
+      "fieldtype": "Currency",
+      "label": "Other",
+      "default": "0"
+    },
+    {
+      "fieldname": "section_notes",
+      "fieldtype": "Section Break",
+      "label": "Notes"
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Small Text",
+      "label": "Notes"
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Cashier Shift",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Store Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    },
+    {
+      "role": "Cashier",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    }
+  ],
+  "title_field": "cashier",
+  "track_changes": 1
+}

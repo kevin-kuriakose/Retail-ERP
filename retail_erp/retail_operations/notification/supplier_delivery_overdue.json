@@ -1,0 +1,17 @@
+{
+  "attach_print": 0,
+  "channel": "System Notification",
+  "condition": "doc.status in ('Draft', 'Ordered')",
+  "creation": "2024-01-01 00:00:00.000000",
+  "date_changed": "expected_delivery_date",
+  "days_in_advance": 0,
+  "doctype": "Notification",
+  "document_type": "Retail Purchase Order",
+  "enabled": 1,
+  "event": "Days After",
+  "message": "<p>Purchase Order <strong>{{ doc.name }}</strong> from supplier {{ doc.supplier }} was expected on {{ doc.expected_delivery_date }} but has not been received. Grand Total: Rs {{ doc.grand_total }}. Please follow up with the supplier immediately.</p>",
+  "name": "Supplier Delivery Overdue",
+  "owner": "Administrator",
+  "send_system_notification": 1,
+  "subject": "Delivery Overdue — PO {{ doc.name }} from {{ doc.supplier }}"
+}

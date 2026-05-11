@@ -1,0 +1,157 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series",
+    "payment_date",
+    "store",
+    "customer",
+    "payment_mode",
+    "column_break_1",
+    "amount_received",
+    "payment_status",
+    "pos_invoice",
+    "sales_invoice",
+    "section_gateway",
+    "razorpay_order_id",
+    "razorpay_payment_id",
+    "gateway_response",
+    "section_status",
+    "status"
+  ],
+  "fields": [
+    {
+      "fieldname": "naming_series",
+      "fieldtype": "Series",
+      "label": "Series",
+      "options": "RPE-.YYYY.-.#####",
+      "default": "RPE-.YYYY.-.#####"
+    },
+    {
+      "fieldname": "payment_date",
+      "fieldtype": "Date",
+      "label": "Payment Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "store",
+      "fieldtype": "Link",
+      "label": "Store",
+      "options": "Store Profile",
+      "reqd": 1
+    },
+    {
+      "fieldname": "customer",
+      "fieldtype": "Link",
+      "label": "Customer",
+      "options": "Retail Customer",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "payment_mode",
+      "fieldtype": "Select",
+      "label": "Payment Mode",
+      "options": "Cash\nCard (Debit/Credit)\nUPI\nRazorpay\nStore Credit\nLoyalty Points",
+      "reqd": 1,
+      "default": "Cash",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "amount_received",
+      "fieldtype": "Currency",
+      "label": "Amount Received (Rs)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "payment_status",
+      "fieldtype": "Select",
+      "label": "Payment Status",
+      "options": "Pending\nCaptured\nFailed\nRefunded",
+      "default": "Pending",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "pos_invoice",
+      "fieldtype": "Link",
+      "label": "POS Invoice",
+      "options": "POS Invoice"
+    },
+    {
+      "fieldname": "sales_invoice",
+      "fieldtype": "Link",
+      "label": "Sales Invoice",
+      "options": "Retail Sales Invoice"
+    },
+    {
+      "fieldname": "section_gateway",
+      "fieldtype": "Section Break",
+      "label": "Gateway Details"
+    },
+    {
+      "fieldname": "razorpay_order_id",
+      "fieldtype": "Data",
+      "label": "Razorpay Order ID"
+    },
+    {
+      "fieldname": "razorpay_payment_id",
+      "fieldtype": "Data",
+      "label": "Razorpay Payment ID"
+    },
+    {
+      "fieldname": "gateway_response",
+      "fieldtype": "Small Text",
+      "label": "Gateway Response"
+    },
+    {
+      "fieldname": "section_status",
+      "fieldtype": "Section Break",
+      "label": "Status"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nReconciled\nCancelled",
+      "default": "Draft",
+      "in_list_view": 1
+    }
+  ],
+  "module": "Retail Operations",
+  "name": "Retail Payment Entry",
+  "naming_rule": "By \"Naming Series\" field",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Accounts Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    },
+    {
+      "role": "Cashier",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 0
+    }
+  ],
+  "title_field": "name",
+  "track_changes": 1
+}
