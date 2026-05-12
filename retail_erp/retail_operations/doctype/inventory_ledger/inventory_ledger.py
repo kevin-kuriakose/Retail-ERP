@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt, now_datetime, today
+from frappe.utils import flt, today
 
 
 class InventoryLedger(Document):
@@ -23,13 +23,15 @@ class InventoryLedger(Document):
 
     def after_insert(self):
         frappe.db.set_value("Product Item", self.item, "current_stock", self.qty_after)
+        frappe.db.commit()
 
 
 def create_ledger_entry(item, qty, transaction_type, voucher_type, voucher_no,
                         store=None, warehouse=None, rate=0, remarks=""):
-    """Helper called by invoices to create ledger entries."""
+    """Helper called by invoices to create ledger entries and update stock."""
     frappe.get_doc({
         "doctype": "Inventory Ledger",
+        "naming_series": "IL-.YYYY.-.#####",
         "posting_date": today(),
         "item": item,
         "store": store,
@@ -57,7 +59,7 @@ def restore_stock_on_cancel(doc, method=None):
         create_ledger_entry(
             item=row.item, qty=flt(row.qty), transaction_type="In",
             voucher_type="Retail Sales Invoice", voucher_no=doc.name,
-            store=doc.store, rate=flt(row.rate), remarks="Cancelled — stock restored"
+            store=doc.store, rate=flt(row.rate), remarks="Cancelled - stock restored"
         )
 
 
@@ -75,5 +77,5 @@ def restore_stock_on_return(doc, method=None):
         create_ledger_entry(
             item=row.item, qty=flt(row.qty), transaction_type="In",
             voucher_type="Return Transaction", voucher_no=doc.name,
-            store=doc.store, rate=flt(row.rate), remarks="Return — stock restored"
+            store=doc.store, rate=flt(row.rate), remarks="Return - stock restored"
         )
