@@ -1,0 +1,59 @@
+{
+  "app": "retail_erp",
+  "category": "Modules",
+  "charts": [],
+  "content": "[{\"id\": \"hd-1\", \"type\": \"header\", \"data\": {\"text\": \"Retail Operations\", \"col\": 12}}, {\"id\": \"sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Weigh Label\", \"col\": 3}}, {\"id\": \"sc-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cashier Shift\", \"col\": 3}}, {\"id\": \"sc-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Store Profile\", \"col\": 3}}, {\"id\": \"sc-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Point of Sale\", \"col\": 3}}, {\"id\": \"hd-2\", \"type\": \"header\", \"data\": {\"text\": \"ERPNext Records\", \"col\": 12}}, {\"id\": \"sc-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"POS Invoice\", \"col\": 3}}, {\"id\": \"sc-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Item\", \"col\": 3}}, {\"id\": \"sc-7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Customer\", \"col\": 3}}, {\"id\": \"sc-8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Loyalty Point Entry\", \"col\": 3}}]",
+  "icon": "shopping-cart",
+  "is_hidden": 0,
+  "label": "RetailEdge",
+  "module": "Retail Operations",
+  "name": "RetailEdge",
+  "owner": "Administrator",
+  "public": 1,
+  "roles": [],
+  "sequence_id": 1,
+  "shortcuts": [
+    {
+      "label": "Weigh Label",
+      "link_to": "Weigh Label",
+      "type": "DocType"
+    },
+    {
+      "label": "Cashier Shift",
+      "link_to": "Cashier Shift",
+      "type": "DocType"
+    },
+    {
+      "label": "Store Profile",
+      "link_to": "Store Profile",
+      "type": "DocType"
+    },
+    {
+      "label": "Point of Sale",
+      "link_to": "point-of-sale",
+      "type": "Page"
+    },
+    {
+      "label": "POS Invoice",
+      "link_to": "POS Invoice",
+      "type": "DocType"
+    },
+    {
+      "label": "Item",
+      "link_to": "Item",
+      "type": "DocType"
+    },
+    {
+      "label": "Customer",
+      "link_to": "Customer",
+      "type": "DocType"
+    },
+    {
+      "label": "Loyalty Point Entry",
+      "link_to": "Loyalty Point Entry",
+      "type": "DocType"
+    }
+  ],
+  "links": [],
+  "doctype": "Workspace"
+}

@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetailEdge POS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f11;
+    --surface: #1a1a1f;
+    --surface2: #22222a;
+    --surface3: #2a2a35;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --accent: #00e5a0;
+    --accent-dim: rgba(0,229,160,0.12);
+    --accent-glow: rgba(0,229,160,0.25);
+    --red: #ff5c5c;
+    --red-dim: rgba(255,92,92,0.12);
+    --amber: #ffb347;
+    --amber-dim: rgba(255,179,71,0.12);
+    --text: #f0f0f4;
+    --text2: #9090a0;
+    --text3: #606070;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Sora', sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 52px 1fr;
+    grid-template-columns: 1fr 400px;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .logo span { color: var(--text2); }
+
+  .header-search {
+    flex: 1;
+    max-width: 480px;
+    position: relative;
+  }
+
+  .header-search input {
+    width: 100%;
+    height: 34px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 0 12px 0 36px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .header-search input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .header-search input::placeholder { color: var(--text3); }
+
+  .search-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  .scan-indicator {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+
+  .scan-indicator.active { display: flex; }
+
+  .pulse {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cashier-info {
+    font-size: 12px;
+    color: var(--text2);
+    font-family: var(--mono);
+    text-align: right;
+  }
+
+  .cashier-info strong { color: var(--text); display: block; }
+
+  /* ── LEFT PANEL: ITEMS ── */
+  .items-panel {
+    background: var(--bg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+  }
+
+  .panel-toolbar {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .filter-btn {
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .item-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  .items-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    align-content: start;
+  }
+
+  .items-grid::-webkit-scrollbar { width: 4px; }
+  .items-grid::-webkit-scrollbar-track { background: transparent; }
+  .items-grid::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+  .item-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .item-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-1px);
+  }
+
+  .item-card:active { transform: translateY(0); }
+
+  .item-card.out-of-stock {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .stock-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 2px 6px;
+    border-radius: 20px;
+  }
+
+  .stock-badge.low { color: var(--amber); background: var(--amber-dim); }
+  .stock-badge.zero { color: var(--red); background: var(--red-dim); }
+
+  .item-initials {
+    width: 44px;
+    height: 44px;
+    background: var(--surface3);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 10px;
+  }
+
+  .item-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .item-price {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .item-uom {
+    font-size: 10px;
+    color: var(--text3);
+    margin-left: 2px;
+  }
+
+  /* ── RIGHT PANEL: CART ── */
+  .cart-panel {
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .cart-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .customer-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .customer-select {
+    flex: 1;
+    height: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 0 10px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .customer-select:focus { border-color: var(--accent); }
+
+  .loyalty-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    background: var(--amber-dim);
+    padding: 4px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .cart-title {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .cart-items::-webkit-scrollbar { width: 3px; }
+  .cart-items::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+  .cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 8px;
+    color: var(--text3);
+    font-size: 13px;
+  }
+
+  .cart-empty-icon { font-size: 32px; opacity: 0.3; }
+
+  .cart-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 8px;
+    border-radius: var(--radius);
+    transition: background 0.1s;
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .cart-row:hover { background: var(--surface2); }
+
+  .cart-row-info { flex: 1; min-width: 0; }
+
+  .cart-row-name {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cart-row-meta {
+    font-size: 11px;
+    color: var(--text2);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+
+  .cart-row-meta .weigh-tag {
+    color: var(--accent);
+    font-size: 10px;
+    background: var(--accent-dim);
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .qty-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--surface3);
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+    line-height: 1;
+  }
+
+  .qty-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .qty-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  .cart-row-amount {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    min-width: 64px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .cart-row-del {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.1s;
+    flex-shrink: 0;
+  }
+
+  .cart-row-del:hover { color: var(--red); background: var(--red-dim); }
+
+  /* ── TOTALS ── */
+  .cart-footer {
+    border-top: 1px solid var(--border);
+    padding: 14px 16px;
+    flex-shrink: 0;
+  }
+
+  .totals-table {
+    width: 100%;
+    margin-bottom: 14px;
+  }
+
+  .totals-table tr td {
+    padding: 3px 0;
+    font-size: 13px;
+  }
+
+  .totals-table tr td:last-child {
+    text-align: right;
+    font-family: var(--mono);
+  }
+
+  .totals-table .muted { color: var(--text2); }
+
+  .totals-table .grand-total td {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .discount-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .discount-input {
+    height: 28px;
+    width: 80px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 0 8px;
+    outline: none;
+    text-align: right;
+  }
+
+  .discount-input:focus { border-color: var(--accent); }
+
+  .discount-label {
+    font-size: 12px;
+    color: var(--text2);
+    flex: 1;
+  }
+
+  .payment-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .pay-btn {
+    height: 40px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .pay-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface3); }
+  .pay-btn.selected { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  .checkout-btn {
+    width: 100%;
+    height: 48px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-lg);
+    color: #0a1a12;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .checkout-btn:hover { background: #00ffb3; transform: translateY(-1px); }
+  .checkout-btn:active { transform: translateY(0); }
+  .checkout-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 13px;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: toastIn 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .toast.success { border-color: var(--accent); color: var(--accent); }
+  .toast.error { border-color: var(--red); color: var(--red); }
+  .toast.info { border-color: var(--amber); color: var(--amber); }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    width: 360px;
+    animation: modalIn 0.2s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .modal-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+
+  .modal-amount {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .modal-label { font-size: 12px; color: var(--text2); }
+
+  .modal-input {
+    height: 40px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 15px;
+    padding: 0 12px;
+    outline: none;
+    width: 100%;
+  }
+
+  .modal-input:focus { border-color: var(--accent); }
+
+  .modal-change {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    text-align: center;
+    min-height: 20px;
+    margin-bottom: 16px;
+  }
+
+  .modal-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .modal-cancel {
+    height: 40px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .modal-cancel:hover { color: var(--text); border-color: var(--border2); background: var(--surface2); }
+
+  .modal-confirm {
+    height: 40px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--accent);
+    color: #0a1a12;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .modal-confirm:hover { background: #00ffb3; }
+
+  /* ── CONFIG BANNER ── */
+  .config-banner {
+    grid-column: 1 / -1;
+    background: var(--amber-dim);
+    border-bottom: 1px solid var(--amber);
+    padding: 8px 20px;
+    font-size: 12px;
+    color: var(--amber);
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,15,17,0.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    font-family: var(--mono);
+    color: var(--text2);
+    font-size: 13px;
+  }
+
+  .loading-overlay.show { display: flex; }
+
+  .spinner {
+    width: 32px; height: 32px;
+    border: 2px solid var(--surface3);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- ── CONFIG — edit these to match your site ── -->
+<script>
+const CONFIG = {
+  // Your Frappe site URL — set to '' if running on same origin
+  SITE_URL: '',
+  // Your POS Profile name
+  POS_PROFILE: 'Pos',
+  // Default price list
+  PRICE_LIST: 'Standard Selling',
+  // Default warehouse
+  WAREHOUSE: 'Stores - B',
+  // Default company
+  COMPANY: 'bizaxl',
+  // Default customer
+  DEFAULT_CUSTOMER: 'Walk-In Customer',
+};
+</script>
+
+<header>
+  <div class="logo">Retail<span>Edge</span> <span style="color:var(--text3);font-size:11px;">POS</span></div>
+  <div class="header-search">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Scan barcode or search item..." autocomplete="off" autofocus>
+  </div>
+  <div class="scan-indicator" id="scanIndicator">
+    <div class="pulse"></div>
+    scanning...
+  </div>
+  <div class="header-right">
+    <div class="cashier-info">
+      <strong id="cashierName">Administrator</strong>
+      <span id="currentTime"></span>
+    </div>
+  </div>
+</header>
+
+<div class="items-panel">
+  <div class="panel-toolbar">
+    <button class="filter-btn active" onclick="filterGroup(this,'All')">All</button>
+    <div id="groupFilters" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+    <span class="item-count" id="itemCount">— items</span>
+  </div>
+  <div class="items-grid" id="itemsGrid">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">⊡</div>
+      <span>Loading items...</span>
+    </div>
+  </div>
+</div>
+
+<div class="cart-panel">
+  <div class="cart-header">
+    <div class="customer-row">
+      <select class="customer-select" id="customerSelect" onchange="onCustomerChange()">
+        <option value="Walk-In Customer">Walk-In Customer</option>
+      </select>
+      <div class="loyalty-badge" id="loyaltyBadge" style="display:none"></div>
+    </div>
+    <div class="cart-title">item cart</div>
+  </div>
+
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon" style="font-size:24px">◫</div>
+      <span style="font-size:12px">Cart is empty</span>
+      <span style="font-size:11px;color:var(--text3)">scan or click an item</span>
+    </div>
+  </div>
+
+  <div class="cart-footer">
+    <div class="discount-row">
+      <span class="discount-label">Discount (%)</span>
+      <input type="number" class="discount-input" id="discountInput" value="0" min="0" max="100" step="0.5" oninput="renderTotals()">
+    </div>
+    <table class="totals-table">
+      <tr><td class="muted">Subtotal</td><td id="subtotal">₹ 0.00</td></tr>
+      <tr><td class="muted">Discount</td><td id="discountAmt" style="color:var(--red)">— ₹ 0.00</td></tr>
+      <tr><td class="muted">Tax (GST)</td><td id="taxAmt">₹ 0.00</td></tr>
+      <tr class="grand-total"><td>Total</td><td id="grandTotal">₹ 0.00</td></tr>
+    </table>
+    <div class="payment-btns">
+      <button class="pay-btn selected" id="btnCash" onclick="selectPayment('Cash')">💵 Cash</button>
+      <button class="pay-btn" id="btnCard" onclick="selectPayment('Card')">💳 Card</button>
+      <button class="pay-btn" id="btnUPI" onclick="selectPayment('UPI')">📱 UPI</button>
+      <button class="pay-btn" id="btnCredit" onclick="selectPayment('Credit')">📋 Credit</button>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>
+      Checkout →
+    </button>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div class="modal-title">Confirm Payment</div>
+    <div class="modal-sub" id="modalSub">Cash payment</div>
+    <div class="modal-amount" id="modalAmount">₹ 0.00</div>
+    <div class="modal-input-row" id="cashInputRow">
+      <label class="modal-label">Cash tendered</label>
+      <input type="number" class="modal-input" id="cashTendered" oninput="calcChange()" placeholder="0.00">
+    </div>
+    <div class="modal-change" id="changeDisplay"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" onclick="submitInvoice()">Confirm & Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <span id="loadingText">Processing...</span>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────
+let cart = [];
+let allItems = [];
+let customers = [];
+let selectedPayment = 'Cash';
+let currentGroup = 'All';
+let scanBuffer = '';
+let scanTimer = null;
+
+// ── INIT ───────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  updateClock();
+  setInterval(updateClock, 1000);
+  loadCustomers();
+  loadItems();
+  setupBarcodeListener();
+});
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('currentTime').textContent =
+    now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+}
+
+// ── API ────────────────────────────────────────────────────────
+async function api(method, args = {}) {
+  const base = CONFIG.SITE_URL || '';
+  const res = await fetch(`${base}/api/method/${method}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Frappe-CSRF-Token': getCsrfToken(),
+    },
+    body: JSON.stringify(args),
+    credentials: 'include',
+  });
+  const data = await res.json();
+  if (data.exc) throw new Error(data.exc);
+  return data.message;
+}
+
+function getCsrfToken() {
+  // Frappe stores csrf_token in a cookie and also on window
+  if (typeof frappe !== 'undefined' && frappe.csrf_token) return frappe.csrf_token;
+  const m = document.cookie.match(/csrf_token=([^;]+)/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+function getCookie(name) {
+  const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return m ? m[2] : '';
+}
+
+// ── LOAD DATA ──────────────────────────────────────────────────
+async function loadItems() {
+  try {
+    const res = await fetch(`/api/method/erpnext.selling.page.point_of_sale.point_of_sale.get_items?` +
+      new URLSearchParams({
+        start: 0,
+        page_length: 200,
+        price_list: CONFIG.PRICE_LIST,
+        item_group: 'All Item Groups',
+        pos_profile: CONFIG.POS_PROFILE,
+        search_term: '',
+      }), {
+      method: 'GET',
+      credentials: 'include',
+      headers: { 'X-Frappe-CSRF-Token': getCsrfToken() },
+    });
+    const data = await res.json();
+    if (data.exc) throw new Error(data.exc);
+    allItems = data.message?.items || data.message || [];
+    renderGroups();
+    renderItems(allItems);
+  } catch(e) {
+    showToast('Failed to load items: ' + e.message, 'error');
+    document.getElementById('itemsGrid').innerHTML =
+      `<div class="cart-empty"><span style="color:var(--red)">Could not load items — are you logged into ERPNext?</span></div>`;
+  }
+}
+async function loadCustomers() {
+  try {
+    const result = await api('frappe.client.get_list', {
+      doctype: 'Customer',
+      fields: JSON.stringify(['name', 'customer_name']),
+      limit: 100,
+    });
+    customers = result || [];
+    const sel = document.getElementById('customerSelect');
+    sel.innerHTML = '';
+    const defaults = ['Walk-In Customer'];
+    const all = [...new Set([...defaults, ...customers.map(c => c.name)])];
+    all.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      sel.appendChild(o);
+    });
+  } catch(e) { /* silent fail — walk-in works */ }
+}
+
+// ── RENDER ITEMS ───────────────────────────────────────────────
+function renderGroups() {
+  const groups = [...new Set(allItems.map(i => i.item_group).filter(Boolean))];
+  const container = document.getElementById('groupFilters');
+  container.innerHTML = groups.map(g =>
+    `<button class="filter-btn" onclick="filterGroup(this,'${g}')">${g}</button>`
+  ).join('');
+}
+
+function filterGroup(btn, group) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentGroup = group;
+  const filtered = group === 'All' ? allItems :
+    allItems.filter(i => i.item_group === group);
+  renderItems(filtered);
+}
+
+function renderItems(items) {
+  const grid = document.getElementById('itemsGrid');
+  document.getElementById('itemCount').textContent = `${items.length} items`;
+  if (!items.length) {
+    grid.innerHTML = `<div class="cart-empty"><span>No items found</span></div>`;
+    return;
+  }
+  grid.innerHTML = items.map(item => {
+    const initials = item.item_code.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    const qty = item.actual_qty || 0;
+    const badgeClass = qty <= 0 ? 'zero' : qty < 10 ? 'low' : '';
+    const badgeText = qty <= 0 ? 'OUT' : qty < 10 ? `${qty} left` : qty;
+    const oos = qty <= 0 ? 'out-of-stock' : '';
+    return `
+      <div class="item-card ${oos}" onclick="${qty > 0 ? `addToCart('${item.item_code.replace(/'/g,"\\'")}')` : ''}">
+        <span class="stock-badge ${badgeClass}">${badgeText}</span>
+        <div class="item-initials">${initials}</div>
+        <div class="item-name">${item.item_name || item.item_code}</div>
+        <div class="item-price">₹ ${(item.price_list_rate || 0).toFixed(2)}<span class="item-uom">/ ${item.uom || 'Nos'}</span></div>
+      </div>`;
+  }).join('');
+}
+
+// ── CART ───────────────────────────────────────────────────────
+function addToCart(itemCode, overrides = {}) {
+  const item = allItems.find(i => i.item_code === itemCode);
+  if (!item && !overrides.item_name) return;
+
+  const rate = overrides.rate ?? (item?.price_list_rate || 0);
+  const qty  = overrides.qty  ?? 1;
+  const name = overrides.item_name ?? (item?.item_name || itemCode);
+  const isWeigh = !!overrides.isWeigh;
+  const barcode = overrides.barcode || null;
+
+  // For weigh items — each scan is a unique line (different weight each time)
+  if (isWeigh) {
+    cart.push({ itemCode, name, qty, rate, isWeigh, barcode,
+      amount: parseFloat((qty * rate).toFixed(2)) });
+    renderCart();
+    showToast(`✓ ${name} — ${qty} kg @ ₹${rate}/kg`, 'success');
+    return;
+  }
+
+  // Normal item — increment if already in cart
+  const existing = cart.find(r => r.itemCode === itemCode && !r.isWeigh);
+  if (existing) {
+    existing.qty += qty;
+    existing.amount = parseFloat((existing.qty * existing.rate).toFixed(2));
+  } else {
+    cart.push({ itemCode, name, qty, rate, isWeigh: false, barcode: null,
+      amount: parseFloat((qty * rate).toFixed(2)) });
+  }
+  renderCart();
+  showToast(`✓ ${name}`, 'success');
+}
+
+function changeQty(idx, delta) {
+  const row = cart[idx];
+  if (!row) return;
+  if (row.isWeigh) return; // weigh items have fixed qty
+  row.qty = Math.max(0.001, parseFloat((row.qty + delta).toFixed(3)));
+  row.amount = parseFloat((row.qty * row.rate).toFixed(2));
+  if (row.qty <= 0) cart.splice(idx, 1);
+  renderCart();
+}
+
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  renderCart();
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  if (!cart.length) {
+    container.innerHTML = `
+      <div class="cart-empty">
+        <div class="cart-empty-icon" style="font-size:24px">◫</div>
+        <span style="font-size:12px">Cart is empty</span>
+        <span style="font-size:11px;color:var(--text3)">scan or click an item</span>
+      </div>`;
+    document.getElementById('checkoutBtn').disabled = true;
+    renderTotals();
+    return;
+  }
+
+  container.innerHTML = cart.map((row, idx) => `
+    <div class="cart-row">
+      <div class="cart-row-info">
+        <div class="cart-row-name">${row.name}</div>
+        <div class="cart-row-meta">
+          ${row.isWeigh ? `<span class="weigh-tag">⚖ WEIGH</span>` : ''}
+          ₹ ${row.rate.toFixed(2)} / ${row.isWeigh ? 'kg' : 'unit'}
+        </div>
+      </div>
+      <div class="qty-control">
+        ${row.isWeigh ? `<span class="qty-value">${row.qty} kg</span>` : `
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-value">${row.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+        `}
+      </div>
+      <div class="cart-row-amount">₹ ${row.amount.toFixed(2)}</div>
+      <button class="cart-row-del" onclick="removeFromCart(${idx})">✕</button>
+    </div>
+  `).join('');
+
+  document.getElementById('checkoutBtn').disabled = false;
+  renderTotals();
+}
+
+function renderTotals() {
+  const subtotal = cart.reduce((s, r) => s + r.amount, 0);
+  const disc = parseFloat(document.getElementById('discountInput').value || 0);
+  const discAmt = subtotal * disc / 100;
+  const afterDisc = subtotal - discAmt;
+  const tax = afterDisc * 0.18; // 18% GST — adjust as needed
+  const grand = afterDisc + tax;
+
+  document.getElementById('subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
+  document.getElementById('discountAmt').textContent = disc > 0 ? `— ₹ ${discAmt.toFixed(2)}` : '—';
+  document.getElementById('taxAmt').textContent = `₹ ${tax.toFixed(2)}`;
+  document.getElementById('grandTotal').textContent = `₹ ${grand.toFixed(2)}`;
+}
+
+function getGrandTotal() {
+  const subtotal = cart.reduce((s, r) => s + r.amount, 0);
+  const disc = parseFloat(document.getElementById('discountInput').value || 0);
+  const afterDisc = subtotal * (1 - disc / 100);
+  return afterDisc * 1.18;
+}
+
+// ── PAYMENT ────────────────────────────────────────────────────
+function selectPayment(method) {
+  selectedPayment = method;
+  ['Cash','Card','UPI','Credit'].forEach(m => {
+    document.getElementById(`btn${m}`).classList.toggle('selected', m === method);
+  });
+}
+
+function openCheckout() {
+  if (!cart.length) return;
+  const total = getGrandTotal();
+  document.getElementById('modalAmount').textContent = `₹ ${total.toFixed(2)}`;
+  document.getElementById('modalSub').textContent = `${selectedPayment} payment`;
+  document.getElementById('cashInputRow').style.display =
+    selectedPayment === 'Cash' ? 'flex' : 'none';
+  document.getElementById('cashTendered').value = '';
+  document.getElementById('changeDisplay').textContent = '';
+  document.getElementById('paymentModal').classList.add('open');
+  if (selectedPayment === 'Cash') {
+    setTimeout(() => document.getElementById('cashTendered').focus(), 100);
+  }
+}
+
+function closeModal() {
+  document.getElementById('paymentModal').classList.remove('open');
+}
+
+function calcChange() {
+  const total = getGrandTotal();
+  const tendered = parseFloat(document.getElementById('cashTendered').value || 0);
+  const change = tendered - total;
+  const el = document.getElementById('changeDisplay');
+  if (tendered > 0) {
+    el.textContent = change >= 0
+      ? `Change: ₹ ${change.toFixed(2)}`
+      : `Short by: ₹ ${Math.abs(change).toFixed(2)}`;
+    el.style.color = change >= 0 ? 'var(--accent)' : 'var(--red)';
+  } else {
+    el.textContent = '';
+  }
+}
+
+// ── SUBMIT INVOICE ─────────────────────────────────────────────
+async function submitInvoice() {
+  closeModal();
+  showLoading('Creating invoice...');
+
+  const customer = document.getElementById('customerSelect').value;
+  const disc = parseFloat(document.getElementById('discountInput').value || 0);
+  const items = cart.map(row => ({
+    item_code: row.itemCode,
+    qty: row.qty,
+    rate: row.rate,
+    uom: row.isWeigh ? 'Kg' : 'Nos',
+  }));
+
+  try {
+    // Create POS Invoice via Frappe API
+    const invoice = await api('frappe.client.insert', {
+      doc: JSON.stringify({
+        doctype: 'POS Invoice',
+        customer: customer,
+        pos_profile: CONFIG.POS_PROFILE,
+        company: CONFIG.COMPANY,
+        currency: 'INR',
+        selling_price_list: CONFIG.PRICE_LIST,
+        additional_discount_percentage: disc,
+        items: items,
+        payments: [{
+          mode_of_payment: selectedPayment === 'Credit' ? 'Credit Card' : selectedPayment,
+          amount: getGrandTotal(),
+        }],
+      }),
+    });
+
+    // Submit the invoice
+    showLoading('Submitting invoice...');
+    await api('frappe.client.submit', { doc: JSON.stringify(invoice) });
+
+    showToast(`✓ Invoice ${invoice.name} submitted!`, 'success');
+    clearCart();
+  } catch(e) {
+    showToast('Invoice failed: ' + (e.message || 'Unknown error'), 'error');
+  } finally {
+    hideLoading();
+  }
+}
+
+function clearCart() {
+  cart = [];
+  document.getElementById('discountInput').value = 0;
+  renderCart();
+}
+
+// ── BARCODE SCANNER ────────────────────────────────────────────
+function setupBarcodeListener() {
+  const input = document.getElementById('searchInput');
+
+  // Approach 1: Physical barcode scanners emit chars rapidly then Enter
+  input.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const term = input.value.trim();
+      if (term) await handleSearch(term);
+      input.value = '';
+    }
+  });
+
+  // Approach 2: Detect rapid input (barcode scanner)
+  let lastKeyTime = 0;
+  let rapidBuffer = '';
+
+  input.addEventListener('input', () => {
+    const now = Date.now();
+    const delta = now - lastKeyTime;
+    lastKeyTime = now;
+
+    // Barcode scanners type very fast (< 30ms between chars)
+    if (delta < 30) {
+      rapidBuffer = input.value;
+      clearTimeout(scanTimer);
+      scanTimer = setTimeout(async () => {
+        const term = rapidBuffer.trim();
+        if (term && term.length > 3) {
+          document.getElementById('scanIndicator').classList.add('active');
+          await handleSearch(term);
+          document.getElementById('scanIndicator').classList.remove('active');
+          input.value = '';
+          rapidBuffer = '';
+        }
+      }, 80);
+    }
+  });
+}
+
+async function handleSearch(term) {
+  term = term.trim();
+  if (!term) return;
+
+  // Weigh label barcode
+  if (term.toUpperCase().startsWith('WL-')) {
+    await handleWeighBarcode(term.toUpperCase());
+    return;
+  }
+
+  // Regular item barcode or search
+  const match = allItems.find(i =>
+    i.item_code === term ||
+    i.barcode === term ||
+    i.item_name?.toLowerCase() === term.toLowerCase()
+  );
+
+  if (match) {
+    addToCart(match.item_code);
+    document.getElementById('searchInput').value = '';
+    return;
+  }
+
+  // Try server search
+  try {
+    const result = await api('erpnext.selling.page.point_of_sale.point_of_sale.search_by_term', {
+      search_term: term,
+      pos_profile: CONFIG.POS_PROFILE,
+      price_list: CONFIG.PRICE_LIST,
+    });
+    if (result?.items?.length) {
+      const item = result.items[0];
+      addToCart(item.item_code, {
+        qty: item.qty || 1,
+        rate: item.rate || item.price_list_rate,
+        item_name: item.item_name,
+      });
+    } else {
+      showToast(`Item not found: ${term}`, 'error');
+    }
+  } catch(e) {
+    showToast('Search error: ' + e.message, 'error');
+  }
+}
+
+async function handleWeighBarcode(barcode) {
+  try {
+    showLoading('Reading weigh label...');
+    const d = await api('retail_erp.retail_operations.utils.get_wl_data_by_barcode', { barcode });
+    hideLoading();
+
+    if (!d || !d.item_code) {
+      showToast('Weigh label not found or voided', 'error');
+      return;
+    }
+
+    // Add with exact qty and rate from the weigh label
+    addToCart(d.item_code, {
+      qty:        d.qty,          // exact net weight in kg
+      rate:       d.rate,         // rate per kg
+      item_name:  d.item_name,    // "Basmati Rice 5kg (10.0 kg)"
+      isWeigh:    true,
+      barcode:    barcode,
+    });
+
+  } catch(e) {
+    hideLoading();
+    showToast('Weigh label error: ' + e.message, 'error');
+  }
+}
+
+// ── CUSTOMER ───────────────────────────────────────────────────
+async function onCustomerChange() {
+  const customer = document.getElementById('customerSelect').value;
+  try {
+    const result = await api('retail_erp.retail_operations.utils.get_loyalty_points',
+      { customer });
+    if (result && result.points > 0) {
+      const badge = document.getElementById('loyaltyBadge');
+      badge.textContent = `${result.tier} · ${result.points} pts`;
+      badge.style.display = 'block';
+    } else {
+      document.getElementById('loyaltyBadge').style.display = 'none';
+    }
+  } catch(e) { document.getElementById('loyaltyBadge').style.display = 'none'; }
+}
+
+// ── UTILS ──────────────────────────────────────────────────────
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+function showLoading(msg = 'Processing...') {
+  document.getElementById('loadingText').textContent = msg;
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

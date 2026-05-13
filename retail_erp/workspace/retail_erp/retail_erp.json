@@ -92,8 +92,8 @@
       "icon": "uil uil-percentage"
     },
     {
-      "label": "POS Invoice",
-      "link_to": "POS Invoice",
+      "label": "Retail POS Invoice",
+      "link_to": "Retail POS Invoice",
       "type": "DocType",
       "name": "sc-pos",
       "color": "Red",

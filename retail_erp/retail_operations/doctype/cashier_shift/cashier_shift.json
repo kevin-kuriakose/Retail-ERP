@@ -1,30 +1,27 @@
 {
   "actions": [],
   "autoname": "naming_series:",
-  "creation": "2024-01-01 00:00:00.000000",
+  "creation": "2024-01-01 00:00:00",
   "doctype": "DocType",
-  "editable_grid": 1,
   "engine": "InnoDB",
+  "is_submittable": 1,
   "field_order": [
     "naming_series",
-    "store",
     "cashier",
-    "shift_open_time",
-    "column_break_1",
-    "shift_close_time",
+    "pos_profile",
+    "shift_date",
+    "col1",
+    "opening_time",
+    "closing_time",
     "status",
     "section_cash",
     "opening_cash",
     "closing_cash",
     "cash_variance",
-    "section_collections",
-    "total_pos_invoices",
-    "total_collections",
-    "cash_collections",
-    "card_collections",
-    "upi_collections",
-    "other_collections",
-    "section_notes",
+    "cash_variance_note",
+    "section_summary",
+    "total_sales",
+    "total_transactions",
     "notes"
   ],
   "fields": [
@@ -36,54 +33,58 @@
       "default": "SHIFT-.YYYY.-.#####"
     },
     {
-      "fieldname": "store",
-      "fieldtype": "Link",
-      "label": "Store",
-      "options": "Store Profile",
-      "reqd": 1,
-      "in_list_view": 1
-    },
-    {
       "fieldname": "cashier",
-      "fieldtype": "Data",
+      "fieldtype": "Link",
       "label": "Cashier",
+      "options": "User",
       "reqd": 1,
       "in_list_view": 1
     },
     {
-      "fieldname": "shift_open_time",
-      "fieldtype": "Datetime",
-      "label": "Shift Open Time",
+      "fieldname": "pos_profile",
+      "fieldtype": "Link",
+      "label": "POS Profile",
+      "options": "POS Profile",
+      "reqd": 1
+    },
+    {
+      "fieldname": "shift_date",
+      "fieldtype": "Date",
+      "label": "Date",
       "reqd": 1,
       "in_list_view": 1
     },
     {
-      "fieldname": "column_break_1",
+      "fieldname": "col1",
       "fieldtype": "Column Break"
     },
     {
-      "fieldname": "shift_close_time",
-      "fieldtype": "Datetime",
-      "label": "Shift Close Time"
+      "fieldname": "opening_time",
+      "fieldtype": "Time",
+      "label": "Opening Time"
+    },
+    {
+      "fieldname": "closing_time",
+      "fieldtype": "Time",
+      "label": "Closing Time"
     },
     {
       "fieldname": "status",
       "fieldtype": "Select",
       "label": "Status",
-      "options": "Open\nClosed\nVariance Flagged",
+      "options": "Open\nClosed",
       "default": "Open",
       "in_list_view": 1
     },
     {
       "fieldname": "section_cash",
       "fieldtype": "Section Break",
-      "label": "Cash Summary"
+      "label": "Cash"
     },
     {
       "fieldname": "opening_cash",
       "fieldtype": "Currency",
-      "label": "Opening Cash (Rs)",
-      "default": "0"
+      "label": "Opening Cash (Rs)"
     },
     {
       "fieldname": "closing_cash",
@@ -97,51 +98,26 @@
       "read_only": 1
     },
     {
-      "fieldname": "section_collections",
+      "fieldname": "cash_variance_note",
+      "fieldtype": "Small Text",
+      "label": "Variance Note"
+    },
+    {
+      "fieldname": "section_summary",
       "fieldtype": "Section Break",
-      "label": "Collections"
+      "label": "Summary"
     },
     {
-      "fieldname": "total_pos_invoices",
-      "fieldtype": "Int",
-      "label": "Total POS Invoices",
-      "read_only": 1,
-      "default": "0"
-    },
-    {
-      "fieldname": "total_collections",
+      "fieldname": "total_sales",
       "fieldtype": "Currency",
-      "label": "Total Collections (Rs)",
+      "label": "Total Sales (Rs)",
       "read_only": 1
     },
     {
-      "fieldname": "cash_collections",
-      "fieldtype": "Currency",
-      "label": "Cash",
-      "default": "0"
-    },
-    {
-      "fieldname": "card_collections",
-      "fieldtype": "Currency",
-      "label": "Card",
-      "default": "0"
-    },
-    {
-      "fieldname": "upi_collections",
-      "fieldtype": "Currency",
-      "label": "UPI",
-      "default": "0"
-    },
-    {
-      "fieldname": "other_collections",
-      "fieldtype": "Currency",
-      "label": "Other",
-      "default": "0"
-    },
-    {
-      "fieldname": "section_notes",
-      "fieldtype": "Section Break",
-      "label": "Notes"
+      "fieldname": "total_transactions",
+      "fieldtype": "Int",
+      "label": "Total Transactions",
+      "read_only": 1
     },
     {
       "fieldname": "notes",
@@ -159,23 +135,24 @@
       "read": 1,
       "write": 1,
       "create": 1,
-      "delete": 1
+      "delete": 1,
+      "submit": 1,
+      "cancel": 1
     },
     {
       "role": "Store Manager",
       "read": 1,
       "write": 1,
       "create": 1,
-      "delete": 0
+      "submit": 1,
+      "cancel": 1
     },
     {
       "role": "Cashier",
       "read": 1,
       "write": 1,
-      "create": 1,
-      "delete": 0
+      "create": 1
     }
   ],
-  "title_field": "cashier",
   "track_changes": 1
 }

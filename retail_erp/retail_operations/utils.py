@@ -1,96 +1,164 @@
 import frappe
 from frappe import _
 from frappe.utils import flt, today
-import hmac
-import hashlib
-import json
 
 
-def send_daily_sales_report():
-    """Scheduled at 23:00 daily — emails sales summary to Store Managers."""
+@frappe.whitelist()
+def get_wl_data_by_barcode(barcode):
+    """Decode weigh label barcode WL-{name} for ERPNext POS."""
+    if not barcode:
+        return {}
+    barcode = barcode.upper().strip()
+    row = frappe.db.get_value("Item Barcode",
+        {"barcode": barcode}, ["parent", "uom"], as_dict=True)
+    if not row:
+        return {}
+    parts = (row.uom or "").split("|")
+    if len(parts) < 3:
+        return {}
+
+    erp_item    = row.parent
+    net_weight  = flt(parts[0])
+    rate_per_kg = flt(parts[1])
+    wl_name     = parts[2]
+    total_amount = round(net_weight * rate_per_kg, 2)
+
+    warehouse = frappe.db.get_value(
+        "Store Profile", {}, "warehouse") or "Stores - B"
+    actual_qty = flt(frappe.db.get_value("Bin",
+        {"item_code": erp_item, "warehouse": warehouse},
+        "actual_qty") or 0)
+    item_doc = frappe.get_cached_doc("Item", erp_item)
+
+    return {
+        "item_code":  erp_item,
+        "item_name":  f"{item_doc.item_name} ({net_weight} kg)",
+        "qty":        net_weight,
+        "rate":       rate_per_kg,
+        "uom":        "Kg",
+        "actual_qty": actual_qty,
+        "wl_name":    wl_name,
+        "barcode":    barcode,
+    }
+
+
+@frappe.whitelist()
+def void_weigh_label(wl_name):
+    frappe.db.set_value("Weigh Label", wl_name, "status", "Voided")
+    frappe.db.delete("Item Barcode", {"barcode": f"WL-{wl_name}"})
+    frappe.db.commit()
+    return {"status": "voided"}
+
+
+@frappe.whitelist()
+def get_loyalty_points(customer):
+    if not customer:
+        return {"points": 0, "tier": "Standard"}
+    result = frappe.db.sql("""
+        SELECT COALESCE(SUM(loyalty_points),0) as pts
+        FROM `tabLoyalty Point Entry`
+        WHERE customer = %s AND expiry_date >= CURDATE()
+    """, customer, as_dict=True)
+    total = flt(result[0].pts if result else 0)
+    return {"points": total, "tier": _get_loyalty_tier(total)}
+
+
+def _get_loyalty_tier(points):
+    if points >= 10000: return "Platinum"
+    elif points >= 5000: return "Gold"
+    elif points >= 1000: return "Silver"
+    return "Standard"
+
+
+def award_loyalty_points(customer, invoice_name, amount, loyalty_program=None):
+    if not customer or not amount:
+        return 0
     try:
-        from retail_erp.retail_operations.report.daily_sales_summary.daily_sales_summary import execute
-        columns, data = execute({"from_date": today(), "to_date": today()})
-        if not data:
-            return
-        headers = "".join(
-            f"<th style='padding:6px;border:1px solid #ddd'>{c.get('label', c) if isinstance(c, dict) else c}</th>"
-            for c in columns
-        )
-        rows_html = ""
-        for row in data:
-            vals = row.values() if isinstance(row, dict) else row
-            cells = "".join(f"<td style='padding:6px;border:1px solid #ddd'>{v}</td>" for v in vals)
-            rows_html += f"<tr>{cells}</tr>"
-        body = f"""
-        <h3>RetailEdge Daily Sales Summary — {today()}</h3>
-        <table style='border-collapse:collapse;font-size:13px'>
-        <thead><tr style='background:#f0f0f0'>{headers}</tr></thead>
-        <tbody>{rows_html}</tbody>
-        </table>
-        """
-        managers = frappe.get_all(
-            "Has Role",
-            filters={"role": ["in", ["Store Manager", "System Manager"]]},
-            fields=["parent"],
-            distinct=True
-        )
-        for m in managers:
-            email = frappe.db.get_value("User", m.parent, "email")
-            if email:
-                frappe.sendmail(
-                    recipients=[email],
-                    subject=f"RetailEdge Daily Sales — {today()}",
-                    message=body
-                )
+        points = int(flt(amount) / 100)
+        if points <= 0:
+            return 0
+        program = loyalty_program or frappe.db.get_value(
+            "Customer", customer, "loyalty_program")
+        if not program:
+            return 0
+        frappe.get_doc({
+            "doctype": "Loyalty Point Entry",
+            "loyalty_program": program,
+            "loyalty_program_tier": _get_loyalty_tier(points),
+            "customer": customer,
+            "invoice_type": "POS Invoice",
+            "invoice": invoice_name,
+            "loyalty_points": points,
+            "purchase_amount": flt(amount),
+            "expiry_date": frappe.utils.add_months(today(), 12),
+            "company": frappe.defaults.get_user_default("Company"),
+        }).insert(ignore_permissions=True)
+        frappe.db.commit()
+        return points
     except Exception:
-        frappe.log_error(frappe.get_traceback(), "RetailEdge Daily Sales Report")
+        frappe.log_error(frappe.get_traceback(), "RetailEdge Loyalty Points")
+        return 0
 
 
-@frappe.whitelist(allow_guest=True)
-def razorpay_webhook():
-    """POST /api/method/retail_erp.retail_operations.utils.razorpay_webhook"""
+@frappe.whitelist()
+def create_razorpay_order(invoice_name, amount, currency="INR"):
     try:
-        payload = frappe.request.data
-        sig = frappe.request.headers.get("X-Razorpay-Signature", "")
-        cfg = frappe.get_doc("Payment Gateway Config", "Razorpay")
-        secret = cfg.get_password("webhook_secret") or ""
-        expected = hmac.new(secret.encode(), payload, hashlib.sha256).hexdigest()
-        if not hmac.compare_digest(expected, sig):
-            frappe.local.response["http_status_code"] = 401
-            return {"status": "unauthorized"}
-        event = json.loads(payload)
-        event_type = event.get("event")
-        if event_type == "payment.captured":
-            _handle_captured(event["payload"]["payment"]["entity"])
-        elif event_type == "payment.failed":
-            _handle_failed(event["payload"]["payment"]["entity"])
-        return {"status": "ok"}
+        import razorpay
+    except ImportError:
+        frappe.throw(_("razorpay not installed. Run: pip install razorpay --break-system-packages"))
+    key_id = frappe.conf.get("razorpay_key_id")
+    key_secret = frappe.conf.get("razorpay_key_secret")
+    if not key_id or not key_secret:
+        frappe.throw(_("Set razorpay_key_id and razorpay_key_secret in site config"))
+    client = razorpay.Client(auth=(key_id, key_secret))
+    amount_paise = int(flt(amount) * 100)
+    order = client.order.create({
+        "amount": amount_paise, "currency": currency,
+        "receipt": invoice_name,
+        "notes": {"invoice": invoice_name},
+    })
+    frappe.db.set_value("POS Invoice", invoice_name, {
+        "custom_razorpay_order_id": order["id"],
+        "custom_payment_status": "Pending",
+    })
+    frappe.db.commit()
+    return {"razorpay_order_id": order["id"],
+            "amount": amount_paise, "currency": currency, "key_id": key_id}
+
+
+@frappe.whitelist()
+def verify_razorpay_payment(invoice_name, razorpay_order_id,
+                             razorpay_payment_id, razorpay_signature):
+    import hmac, hashlib
+    key_secret = frappe.conf.get("razorpay_key_secret", "")
+    body = f"{razorpay_order_id}|{razorpay_payment_id}"
+    expected = hmac.new(
+        key_secret.encode(), body.encode(), hashlib.sha256).hexdigest()
+    if expected != razorpay_signature:
+        frappe.throw(_("Payment verification failed"))
+    frappe.db.set_value("POS Invoice", invoice_name, {
+        "custom_razorpay_payment_id": razorpay_payment_id,
+        "custom_razorpay_signature": razorpay_signature,
+        "custom_payment_status": "Captured",
+    })
+    frappe.db.commit()
+    return {"verified": True}
+
+
+def on_pos_invoice_submit(doc, method):
+    if doc.customer and doc.grand_total:
+        award_loyalty_points(
+            customer=doc.customer,
+            invoice_name=doc.name,
+            amount=doc.grand_total,
+            loyalty_program=frappe.db.get_value(
+                "Customer", doc.customer, "loyalty_program"),
+        )
+
+
+def on_pos_invoice_cancel(doc, method):
+    try:
+        frappe.db.delete("Loyalty Point Entry", {"invoice": doc.name})
+        frappe.db.commit()
     except Exception:
-        frappe.log_error(frappe.get_traceback(), "Razorpay Webhook")
-        frappe.local.response["http_status_code"] = 500
-        return {"status": "error"}
-
-
-def _handle_captured(payment):
-    rzp_id = payment.get("id")
-    order_id = payment.get("order_id")
-    amount_inr = flt(payment.get("amount", 0)) / 100
-    if frappe.db.exists("Retail Payment Entry", {"razorpay_payment_id": rzp_id}):
-        return
-    pe = frappe.db.get_value("Retail Payment Entry", {"razorpay_order_id": order_id}, "name")
-    if pe:
-        frappe.db.set_value("Retail Payment Entry", pe, {
-            "payment_status": "Captured",
-            "razorpay_payment_id": rzp_id,
-            "amount_received": amount_inr,
-        })
-        frappe.db.commit()
-
-
-def _handle_failed(payment):
-    order_id = payment.get("order_id")
-    pe = frappe.db.get_value("Retail Payment Entry", {"razorpay_order_id": order_id}, "name")
-    if pe:
-        frappe.db.set_value("Retail Payment Entry", pe, {"payment_status": "Failed"})
-        frappe.db.commit()
+        frappe.log_error(frappe.get_traceback(), "RetailEdge Loyalty Reversal")
