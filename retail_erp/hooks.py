@@ -27,3 +27,10 @@ app_include_js = "/assets/retail_erp/js/retail_erp_pos.js"
 scheduler_events = {
     "daily": ["retail_erp.retail_operations.tasks.daily_tasks"],
 }
+
+fixtures = [
+    {"doctype": "Workspace", "filters": [["name", "in", ["RetailEdge"]]]},
+    {"doctype": "Notification", "filters": [["document_type", "in", [
+        "BA Customer", "BA Purchase Order", "BA Payment Entry", "BA Item", "Cashier Shift"
+    ]]]},
+]
