@@ -1,93 +1,93 @@
 {
-  "actions": [],
-  "autoname": "field:store_name",
-  "creation": "2024-01-01 00:00:00",
-  "doctype": "DocType",
-  "engine": "InnoDB",
-  "field_order": [
-    "store_name",
-    "warehouse",
-    "pos_profile",
-    "company",
-    "col1",
-    "store_manager",
-    "phone",
-    "email",
-    "address"
-  ],
-  "fields": [
-    {
-      "fieldname": "store_name",
-      "fieldtype": "Data",
-      "label": "Store Name",
-      "reqd": 1,
-      "in_list_view": 1
-    },
-    {
-      "fieldname": "warehouse",
-      "fieldtype": "Link",
-      "label": "Warehouse",
-      "options": "Warehouse",
-      "reqd": 1,
-      "in_list_view": 1
-    },
-    {
-      "fieldname": "pos_profile",
-      "fieldtype": "Link",
-      "label": "POS Profile",
-      "options": "POS Profile",
-      "reqd": 1
-    },
-    {
-      "fieldname": "company",
-      "fieldtype": "Link",
-      "label": "Company",
-      "options": "Company",
-      "reqd": 1
-    },
-    {
-      "fieldname": "col1",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "store_manager",
-      "fieldtype": "Link",
-      "label": "Store Manager",
-      "options": "User"
-    },
-    {
-      "fieldname": "phone",
-      "fieldtype": "Data",
-      "label": "Phone"
-    },
-    {
-      "fieldname": "email",
-      "fieldtype": "Data",
-      "label": "Email"
-    },
-    {
-      "fieldname": "address",
-      "fieldtype": "Small Text",
-      "label": "Address"
-    }
-  ],
-  "module": "Retail Operations",
-  "name": "Store Profile",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "role": "System Manager",
-      "read": 1,
-      "write": 1,
-      "create": 1,
-      "delete": 1
-    },
-    {
-      "role": "Store Manager",
-      "read": 1,
-      "write": 1
-    }
-  ],
-  "title_field": "store_name",
-  "track_changes": 1
+ "actions": [],
+ "autoname": "field:store_name",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "store_name",
+  "warehouse",
+  "pos_profile",
+  "company",
+  "col1",
+  "store_manager",
+  "phone",
+  "email",
+  "address"
+ ],
+ "fields": [
+  {
+   "fieldname": "store_name",
+   "fieldtype": "Data",
+   "label": "Store Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "BA Warehouse",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "pos_profile",
+   "fieldtype": "Link",
+   "label": "POS Profile",
+   "options": "POS Profile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "BA Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "store_manager",
+   "fieldtype": "Link",
+   "label": "Store Manager",
+   "options": "User"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  }
+ ],
+ "module": "Retail Operations",
+ "name": "Store Profile",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Store Manager",
+   "read": 1,
+   "write": 1
+  }
+ ],
+ "title_field": "store_name",
+ "track_changes": 1
 }

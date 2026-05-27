@@ -1,144 +1,144 @@
 {
-  "actions": [],
-  "autoname": "naming_series:",
-  "creation": "2024-01-01 00:00:00",
-  "doctype": "DocType",
-  "engine": "InnoDB",
-  "field_order": [
-    "naming_series",
-    "item",
-    "item_name",
-    "weigh_date",
-    "weigh_time",
-    "col1",
-    "gross_weight_kg",
-    "tare_weight_kg",
-    "net_weight_kg",
-    "unit_rate_per_kg",
-    "total_amount",
-    "barcode_string",
-    "barcode_display",
-    "weighed_by",
-    "status"
-  ],
-  "fields": [
-    {
-      "fieldname": "naming_series",
-      "fieldtype": "Series",
-      "label": "Series",
-      "options": "WL-.YYYY.-.#####",
-      "default": "WL-.YYYY.-.#####"
-    },
-    {
-      "fieldname": "item",
-      "fieldtype": "Link",
-      "label": "Item",
-      "options": "Item",
-      "reqd": 1,
-      "in_list_view": 1
-    },
-    {
-      "fieldname": "item_name",
-      "fieldtype": "Data",
-      "label": "Item Name",
-      "fetch_from": "item.item_name",
-      "read_only": 1,
-      "in_list_view": 1
-    },
-    {
-      "fieldname": "weigh_date",
-      "fieldtype": "Date",
-      "label": "Date",
-      "reqd": 1
-    },
-    {
-      "fieldname": "weigh_time",
-      "fieldtype": "Time",
-      "label": "Time"
-    },
-    {
-      "fieldname": "col1",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "gross_weight_kg",
-      "fieldtype": "Float",
-      "label": "Gross Weight (kg)",
-      "reqd": 1
-    },
-    {
-      "fieldname": "tare_weight_kg",
-      "fieldtype": "Float",
-      "label": "Tare Weight (kg)",
-      "default": "0"
-    },
-    {
-      "fieldname": "net_weight_kg",
-      "fieldtype": "Float",
-      "label": "Net Weight (kg)",
-      "read_only": 1
-    },
-    {
-      "fieldname": "unit_rate_per_kg",
-      "fieldtype": "Currency",
-      "label": "Rate per kg (Rs)",
-      "reqd": 1
-    },
-    {
-      "fieldname": "total_amount",
-      "fieldtype": "Currency",
-      "label": "Total Amount (Rs)",
-      "read_only": 1
-    },
-    {
-      "fieldname": "barcode_string",
-      "fieldtype": "Data",
-      "label": "Barcode",
-      "read_only": 1
-    },
-    {
-      "fieldname": "weighed_by",
-      "fieldtype": "Link",
-      "label": "Weighed By",
-      "options": "User"
-    },
-    {
-      "fieldname": "status",
-      "fieldtype": "Select",
-      "label": "Status",
-      "options": "Weighed\nBilled\nVoided",
-      "default": "Weighed",
-      "in_list_view": 1
-    },
-   {
-  "fieldname": "barcode_display",
-  "fieldtype": "HTML",
-  "label": "Barcode Image"
-   }
-  ],
-  "module": "Retail Operations",
-  "name": "Weigh Label",
-  "naming_rule": "By \"Naming Series\" field",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "role": "System Manager",
-      "read": 1,
-      "write": 1,
-      "create": 1,
-      "delete": 1
-    },
-    {
-      "role": "Store Manager",
-      "read": 1,
-      "write": 1,
-      "create": 1
-    },
-    {
-      "role": "Cashier",
-      "read": 1,
-      "create": 1
-    }
-  ],
-  "track_changes": 1
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "item",
+  "item_name",
+  "weigh_date",
+  "weigh_time",
+  "col1",
+  "gross_weight_kg",
+  "tare_weight_kg",
+  "net_weight_kg",
+  "unit_rate_per_kg",
+  "total_amount",
+  "barcode_string",
+  "barcode_display",
+  "weighed_by",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Series",
+   "label": "Series",
+   "options": "WL-.YYYY.-.#####",
+   "default": "WL-.YYYY.-.#####"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "BA Item",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "fetch_from": "item.item_name",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "weigh_date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "weigh_time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "col1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gross_weight_kg",
+   "fieldtype": "Float",
+   "label": "Gross Weight (kg)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tare_weight_kg",
+   "fieldtype": "Float",
+   "label": "Tare Weight (kg)",
+   "default": "0"
+  },
+  {
+   "fieldname": "net_weight_kg",
+   "fieldtype": "Float",
+   "label": "Net Weight (kg)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unit_rate_per_kg",
+   "fieldtype": "Currency",
+   "label": "Rate per kg (Rs)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount (Rs)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "barcode_string",
+   "fieldtype": "Data",
+   "label": "Barcode",
+   "read_only": 1
+  },
+  {
+   "fieldname": "weighed_by",
+   "fieldtype": "Link",
+   "label": "Weighed By",
+   "options": "User"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Weighed\nBilled\nVoided",
+   "default": "Weighed",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "barcode_display",
+   "fieldtype": "HTML",
+   "label": "Barcode Image"
+  }
+ ],
+ "module": "Retail Operations",
+ "name": "Weigh Label",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Store Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Cashier",
+   "read": 1,
+   "create": 1
+  }
+ ],
+ "track_changes": 1
 }
