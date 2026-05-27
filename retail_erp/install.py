@@ -29,7 +29,7 @@ def after_install():
              "insert_after":"custom_razorpay_signature",
              "read_only":1,"print_hide":1},
         ],
-        "Customer": [
+        "BA Customer": [
             {"fieldname":"custom_loyalty_tier","fieldtype":"Select",
              "label":"Loyalty Tier",
              "options":"Standard\nSilver\nGold\nPlatinum",
@@ -56,7 +56,7 @@ def before_uninstall():
         ("POS Invoice","custom_razorpay_payment_id"),
         ("POS Invoice","custom_razorpay_signature"),
         ("POS Invoice","custom_payment_status"),
-        ("Customer","custom_loyalty_tier"),
+        ("BA Customer","custom_loyalty_tier"),
         ("Item","custom_reorder_level"),
         ("Item","custom_store_category"),
     ]

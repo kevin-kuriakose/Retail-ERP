@@ -18,12 +18,7 @@ doc_events = {
 }
 
 # ── POS Search Override (weigh label barcodes) ────────────────
-override_whitelisted_methods = {
-      "erpnext.selling.page.point_of_sale.point_of_sale.search_by_term":
-        "retail_erp.retail_operations.pos_search.search_by_term",
-    "erpnext.selling.page.point_of_sale.point_of_sale.get_items":
-        "retail_erp.retail_operations.pos_search.get_items",
-}
+# POS overrides moved to bizaxl_pos (coming soon)
 
 # ── ERPNext POS JS Extension ──────────────────────────────────
 app_include_js = "/assets/retail_erp/js/retail_erp_pos.js"

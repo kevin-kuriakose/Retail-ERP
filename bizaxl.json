@@ -1,0 +1,21 @@
+{
+    "app_name": "retail_erp",
+    "display_name": "RetailEdge",
+    "description": "Retail & Point of Sale Management",
+    "show_modules": [
+        "Accounts", "Buying", "Selling", "Stock",
+        "CRM", "Contacts"
+    ],
+    "hide_modules": [
+        "Manufacturing", "Agriculture", "Healthcare",
+        "Education", "Hospitality", "Non Profit",
+        "Loan Management", "Utilities"
+    ],
+    "optional_modules": [
+        {"module": "HR", "label": "HR & Payroll", "description": "Manage store staff and payroll"},
+        {"module": "Projects", "label": "Projects", "description": "Track store projects"},
+        {"module": "Assets", "label": "Asset Management", "description": "Track store assets"},
+        {"module": "Quality", "label": "Quality Management", "description": "Product quality checks"},
+        {"module": "Website", "label": "Website & CMS", "description": "Online store presence"}
+    ]
+}

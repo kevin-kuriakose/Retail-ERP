@@ -23,9 +23,9 @@ class CashierShift(Document):
 
     def _calculate_summary(self):
         result = frappe.db.sql("""
-            SELECT COUNT(*) as cnt, COALESCE(SUM(grand_total),0) as total
-            FROM `tabPOS Invoice`
-            WHERE custom_cashier_shift = %s AND docstatus = 1
+            SELECT COUNT(*) as cnt, COALESCE(SUM(grand_total), 0) as total
+            FROM `tabBA POS Invoice`
+            WHERE cashier_shift = %s AND docstatus = 1
         """, self.name, as_dict=True)
         if result:
             self.total_transactions = result[0].cnt or 0

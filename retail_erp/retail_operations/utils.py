@@ -78,7 +78,7 @@ def award_loyalty_points(customer, invoice_name, amount, loyalty_program=None):
         if points <= 0:
             return 0
         program = loyalty_program or frappe.db.get_value(
-            "Customer", customer, "loyalty_program")
+            "BA Customer", customer, "loyalty_program")
         if not program:
             return 0
         frappe.get_doc({
@@ -152,7 +152,7 @@ def on_pos_invoice_submit(doc, method):
             invoice_name=doc.name,
             amount=doc.grand_total,
             loyalty_program=frappe.db.get_value(
-                "Customer", doc.customer, "loyalty_program"),
+                "BA Customer", doc.customer, "loyalty_program"),
         )
 
 

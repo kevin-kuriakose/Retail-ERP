@@ -29,6 +29,6 @@ def _update_loyalty_tiers():
     """, today(), as_dict=True)
     for c in customers:
         tier = _get_loyalty_tier(c.pts or 0)
-        frappe.db.set_value("Customer", c.customer, "custom_loyalty_tier", tier)
+        frappe.db.set_value("BA Customer", c.customer, "custom_loyalty_tier", tier)
     if customers:
         frappe.db.commit()

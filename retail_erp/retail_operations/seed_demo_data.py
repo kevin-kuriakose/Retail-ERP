@@ -46,9 +46,9 @@ def run():
 
     # 2. Customers
     for cname in ["Walk-In Customer", "Rahul Mehta", "Priya Sharma"]:
-        if not frappe.db.exists("Customer", cname):
+        if not frappe.db.exists("BA Customer", cname):
             frappe.get_doc({
-                "doctype": "Customer",
+                "doctype": "BA Customer",
                 "customer_name": cname,
                 "customer_type": "Individual",
                 "customer_group": "Individual",
